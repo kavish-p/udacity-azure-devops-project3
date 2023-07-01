@@ -7,7 +7,7 @@ variable "tenant_id" {}
 # Resource Group/Location
 variable "location" {}
 variable "resource_group" {
-    default = "Azuredevops"
+    default = "Azuredevops2"
 }
 variable "application_type" {}
 

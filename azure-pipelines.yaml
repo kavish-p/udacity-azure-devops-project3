@@ -9,7 +9,7 @@ variables:
   python.version: "3.7.6"
   azureServiceConnectionId: UdacityDS - 82
   projectRoot: $(System.DefaultWorkingDirectory)
-  environmentName: "test"
+  environmentName: "test-vm"
 
 stages:
   #--------------------------------------------#
@@ -19,10 +19,33 @@ stages:
     jobs:
       - job: BuildInfrastructure
         steps:
-          #--------------------------------------------#
-          # Use Terraform to create the Infrastructure
-          # Install Terraform on the pipeline agent
-          - bash: |
-              echo "hello"
-              pwd
-              ls -l
+          - task: TerraformInstaller@0
+            displayName: "Terrafom installation"
+            inputs:
+              terraformVersion: "1.2.9"
+
+          - task: TerraformTaskV3@3
+            displayName: "Terrafom init"
+            inputs:
+              provider: "azurerm"
+              command: "init"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test"
+              backendServiceArm: "$(azureServiceConnectionId)"
+              backendAzureRmResourceGroupName: "Azuredevops"
+              backendAzureRmStorageAccountName: "tfstate731116321"
+              backendAzureRmContainerName: "tfstate"
+              backendAzureRmKey: "test.terraform.tfstate"
+
+          - task: TerraformTaskV3@3
+            displayName: Terraform validate
+            inputs:
+              provider: "azurerm"
+              command: "validate"
+
+          - task: TerraformTaskV3@3
+            displayName: Terraform apply
+            inputs:
+              provider: "azurerm"
+              command: "apply"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test"
+              environmentServiceNameAzureRM: "$(azureServiceConnectionId)"
