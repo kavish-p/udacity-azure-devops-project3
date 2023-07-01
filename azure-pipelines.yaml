@@ -81,22 +81,17 @@ stages:
               mergeTestResults: true
               testRunTitle: DataValidationAndRegression
 
-          # - task: ArchiveFiles@2
-          #   displayName: "Archive UI Tests"
-          #   inputs:
-          #     rootFolderOrFile: "$(System.DefaultWorkingDirectory)/automatedtesting/selenium"
-          #     includeRootFolder: false
-          #     archiveType: "zip"
-          #     archiveFile: "$(Build.ArtifactStagingDirectory)/uitests.zip"
-
-          # - publish: $(Build.ArtifactStagingDirectory)/uitests.zip
-          #   displayName: Publish Selenium Archive
-          #   artifact: uitests
-
-          - task: PublishPipelineArtifact@1
+          - task: ArchiveFiles@2
+            displayName: "Archive UI Tests"
             inputs:
-              targetPath: "$(System.DefaultWorkingDirectory)/automatedtesting/selenium"
-              artifactName: uitests
+              rootFolderOrFile: "$(System.DefaultWorkingDirectory)/automatedtesting/selenium"
+              includeRootFolder: false
+              archiveType: "zip"
+              archiveFile: "$(Build.ArtifactStagingDirectory)/uitests.zip"
+
+          - publish: $(Build.ArtifactStagingDirectory)/uitests.zip
+            displayName: Publish Selenium Archive
+            artifact: uitests
 
           - task: ArchiveFiles@2
             displayName: "Archive FakeRestAPI"
@@ -106,6 +101,18 @@ stages:
               archiveType: zip
               archiveFile: "$(Build.ArtifactStagingDirectory)/fakerestapi.zip"
 
-          # - publish: "$(Build.ArtifactStagingDirectory)/fakerestapi.zip"
-          #   displayName: Publish FakeRestAPI Archive
-          #   artifact: fakerestapi
+          - publish: "$(Build.ArtifactStagingDirectory)/fakerestapi.zip"
+            displayName: Publish FakeRestAPI Archive
+            artifact: fakerestapi
+
+          - task: ArchiveFiles@2
+            displayName: "Archive PerformanceTestSuite"
+            inputs:
+              rootFolderOrFile: "$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/Starter.jmx"
+              includeRootFolder: false
+              archiveType: zip
+              archiveFile: "$(Build.ArtifactStagingDirectory)/jmeter.zip"
+
+          - publish: "$(Build.ArtifactStagingDirectory)/jmeter.zip"
+            displayName: Publish PerformanceTestSuite Archive
+            artifact: jmeter
