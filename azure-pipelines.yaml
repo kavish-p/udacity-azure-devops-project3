@@ -134,7 +134,7 @@ stages:
                   displayName: "Deploy Azure Web App"
                   inputs:
                     azureSubscription: $(azureServiceConnectionId)
-                    resourceGroupName: Azuredevops2
+                    resourceGroupName: Azuredevops
                     appName: myApplication-AppService
                     appType: webApp
                     package: $(Pipeline.Workspace)/fakerestapi/fakerestapi.zip

@@ -13,18 +13,18 @@ terraform {
     access_key           = "Xlvi1p40ZkL6qN8vI6sOHaST+kankl8SgAyCR624Ox/W5h8gs9xk5zxwGdz884abzJQsl82YtsGX+AStktaTzw=="
   }
 }
-module "resource_group" {
-  source               = "../../modules/resource_group"
-  resource_group       = "${var.resource_group}"
-  location             = "${var.location}"
-  tags = {
-    "DeploymentId" = "227438",
-    "LaunchId"     = "1345",
-    "LaunchType"   = "ON_DEMAND_LAB",
-    "TemplateId"   = "1243",
-    "TenantId"     = "none"
-  }
-}
+# module "resource_group" {
+#   source               = "../../modules/resource_group"
+#   resource_group       = "${var.resource_group}"
+#   location             = "${var.location}"
+#   tags = {
+#     "DeploymentId" = "227438",
+#     "LaunchId"     = "1345",
+#     "LaunchType"   = "ON_DEMAND_LAB",
+#     "TemplateId"   = "1243",
+#     "TenantId"     = "none"
+#   }
+# }
 module "network" {
   source               = "../../modules/network"
   address_space        = "${var.address_space}"
@@ -32,7 +32,7 @@ module "network" {
   virtual_network_name = "${var.virtual_network_name}"
   application_type     = "${var.application_type}"
   resource_type        = "NET"
-  resource_group       = "${module.resource_group.resource_group_name}"
+  resource_group       = "Azuredevops"
   address_prefix_test  = "${var.address_prefix_test}"
 }
 
@@ -41,7 +41,7 @@ module "nsg-test" {
   location         = "${var.location}"
   application_type = "${var.application_type}"
   resource_type    = "NSG"
-  resource_group   = "${module.resource_group.resource_group_name}"
+  resource_group   = "Azuredevops"
   subnet_id        = "${module.network.subnet_id_test}"
   address_prefix_test = "${var.address_prefix_test}"
 }
@@ -50,12 +50,12 @@ module "appservice" {
   location         = "${var.location}"
   application_type = "${var.application_type}"
   resource_type    = "AppService"
-  resource_group   = "${module.resource_group.resource_group_name}"
+  resource_group   = "Azuredevops"
 }
 module "publicip" {
   source           = "../../modules/publicip"
   location         = "${var.location}"
   application_type = "${var.application_type}"
   resource_type    = "publicip"
-  resource_group   = "${module.resource_group.resource_group_name}"
+  resource_group   = "Azuredevops"
 }
