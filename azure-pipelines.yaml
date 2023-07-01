@@ -124,14 +124,7 @@ stages:
     dependsOn:
       - Build
     jobs:
-      - job: DownloadWebAppArchive
-        steps:
-          - download: current
-            artifact: fakerestapi
-
       - deployment: FakeRestAPI
-        dependsOn:
-          - DownloadWebAppArchive
         environment: $(environmentName)
         strategy:
           runOnce:
@@ -142,5 +135,5 @@ stages:
                   inputs:
                     azureSubscription: $(azureServiceConnectionId)
                     appName: myApplication-AppService
-                    appType: webApp
+                    appType: webAppLinux
                     package: $(Pipeline.Workspace)/fakerestapi/fakerestapi.zip
