@@ -7,7 +7,7 @@ pool: mypool
 
 variables:
   python.version: "3.7.6"
-  azureServiceConnectionId: UdacityDS - 82
+  azureServiceConnectionId: azureudacity
   projectRoot: $(System.DefaultWorkingDirectory)
   environmentName: "test-vm"
 
