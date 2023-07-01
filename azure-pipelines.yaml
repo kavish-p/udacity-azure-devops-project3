@@ -130,8 +130,6 @@ stages:
             artifact: fakerestapi
 
       - deployment: FakeRestAPI
-        pool:
-          vmImage: "Ubuntu-18.04"
         dependsOn:
           - DownloadWebAppArchive
         environment: $(environmentName)
