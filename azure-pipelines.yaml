@@ -89,9 +89,14 @@ stages:
               archiveType: "zip"
               archiveFile: "$(Build.ArtifactStagingDirectory)/uitests.zip"
 
-          - publish: $(Build.ArtifactStagingDirectory)/uitests.zip
-            displayName: Publish Selenium Archive
-            artifact: uitests
+          # - publish: $(Build.ArtifactStagingDirectory)/uitests.zip
+          #   displayName: Publish Selenium Archive
+          #   artifact: uitests
+
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: $(Build.ArtifactStagingDirectory)/uitests.zip
+              artifactName: uitests
 
           - task: ArchiveFiles@2
             displayName: "Archive FakeRestAPI"
@@ -101,6 +106,6 @@ stages:
               archiveType: zip
               archiveFile: "$(Build.ArtifactStagingDirectory)/fakerestapi.zip"
 
-          - publish: "$(Build.ArtifactStagingDirectory)/fakerestapi.zip"
-            displayName: Publish FakeRestAPI Archive
-            artifact: fakerestapi
+          # - publish: "$(Build.ArtifactStagingDirectory)/fakerestapi.zip"
+          #   displayName: Publish FakeRestAPI Archive
+          #   artifact: fakerestapi
