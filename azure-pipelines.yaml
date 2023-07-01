@@ -87,11 +87,11 @@ stages:
               rootFolderOrFile: "$(System.DefaultWorkingDirectory)/automatedtesting/selenium"
               includeRootFolder: false
               archiveType: "zip"
-              archiveFile: "$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip"
+              archiveFile: "$(Build.ArtifactStagingDirectory)/uitests.zip"
 
-          - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip
-            displayName: "Upload Package"
-            artifact: drop-uitests
+          - publish: $(Build.ArtifactStagingDirectory)/uitests.zip
+            displayName: Publish Selenium Archive
+            artifact: uitests
 
           - task: ArchiveFiles@2
             displayName: "Archive FakeRestAPI"
@@ -102,5 +102,5 @@ stages:
               archiveFile: "$(Build.ArtifactStagingDirectory)/fakerestapi.zip"
 
           - publish: "$(Build.ArtifactStagingDirectory)/fakerestapi.zip"
-            displayName: FakeRestAPI - Archive
+            displayName: Publish FakeRestAPI Archive
             artifact: fakerestapi
