@@ -19,12 +19,12 @@ stages:
     jobs:
       - job: BuildInfrastructure
         steps:
-          - task: TerraformInstaller
+          - task: TerraformInstaller@0
             displayName: "Terrafom installation"
             inputs:
               terraformVersion: "1.2.9"
 
-          - task: TerraformCLI
+          - task: TerraformCLI@0
             displayName: "Terrafom init"
             inputs:
               provider: "azurerm"
@@ -36,13 +36,13 @@ stages:
               backendAzureRmContainerName: "tfstate"
               backendAzureRmKey: "test.terraform.tfstate"
 
-          - task: TerraformCLI
+          - task: TerraformCLI@0
             displayName: Terraform validate
             inputs:
               provider: "azurerm"
               command: "validate"
 
-          - task: TerraformCLI
+          - task: TerraformCLI@0
             displayName: Terraform apply
             inputs:
               provider: "azurerm"
