@@ -62,7 +62,7 @@ stages:
             continueOnError: true
             inputs:
               script: |
-                newman run data_validation_collection.json  --reporters cli,junit --reporter-junit-export Results\report1.xml
+                newman run data_validation_collection.json  --reporters cli,junit --reporter-junit-export report1.xml
               workingDirectory: "$(System.DefaultWorkingDirectory)/automatedtesting/postman"
 
           - task: CmdLine@2
@@ -70,13 +70,13 @@ stages:
             continueOnError: true
             inputs:
               script: |
-                newman run regression_collection.json --reporters cli,junit --reporter-junit-export Results\report2.xml
+                newman run regression_collection.json --reporters cli,junit --reporter-junit-export report2.xml
               workingDirectory: "$(System.DefaultWorkingDirectory)/automatedtesting/postman"
 
           - task: PublishTestResults@2
             inputs:
               testResultsFormat: JUnit
-              testResultsFiles: "*.xml"
+              testResultsFiles: "report*.xml"
               searchFolder: "$(System.DefaultWorkingDirectory)/automatedtesting/postman/Results"
               mergeTestResults: true
               testRunTitle: DataValidationAndRegression
