@@ -49,3 +49,34 @@ stages:
               command: "apply"
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test"
               environmentServiceNameAzureRM: "$(azureServiceConnectionId)"
+
+          - task: CmdLine@2
+            displayName: Install Newman
+            inputs:
+              script: |
+                npm install -g newman
+              workingDirectory: $(System.DefaultWorkingDirectory)
+
+          - task: CmdLine@2
+            displayName: Run Data Validation Tests
+            continueOnError: true
+            inputs:
+              script: |
+                newman run data_validation_collection.json  --reporters cli,junit --reporter-junit-export Results\report1.xml
+              workingDirectory: "$(System.DefaultWorkingDirectory)/automatedtesting/postman"
+
+          - task: CmdLine@2
+            displayName: Run Regression Tests
+            continueOnError: true
+            inputs:
+              script: |
+                newman run regression_collection.json --reporters cli,junit --reporter-junit-export Results\report2.xml
+              workingDirectory: "$(System.DefaultWorkingDirectory)/automatedtesting/postman"
+
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFormat: JUnit
+              testResultsFiles: "**/report*.xml"
+              searchFolder: "$(System.DefaultWorkingDirectory)/automatedtesting/postman/Results"
+              mergeTestResults: true
+              testRunTitle: DataValidationAndRegression
