@@ -121,7 +121,12 @@ stages:
   # DEPLOYMENT STAGE
   #--------------------------------------------#
   - stage: Deploy
+    dependsOn:
+      - Build
     jobs:
+      - download: current
+        artifact: fakerestapi
+
       - deployment: FakeRestAPI
         pool:
           vmImage: "Ubuntu-18.04"
