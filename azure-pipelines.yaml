@@ -9,7 +9,7 @@ variables:
   python.version: "3.7.6"
   azureServiceConnectionId: azure-udacity
   projectRoot: $(System.DefaultWorkingDirectory)
-  environmentName: "test-vm"
+  environmentName: "test-env"
 
 stages:
   #--------------------------------------------#
@@ -116,3 +116,24 @@ stages:
           - publish: "$(Build.ArtifactStagingDirectory)/jmeter.zip"
             displayName: Publish PerformanceTestSuite Archive
             artifact: jmeter
+
+  #--------------------------------------------#
+  # DEPLOYMENT STAGE
+  #--------------------------------------------#
+  - stage: Deploy
+    jobs:
+      - deployment: FakeRestAPI
+        pool:
+          vmImage: "Ubuntu-18.04"
+        environment: test-vm
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureWebApp@1
+                  displayName: "Deploy Azure Web App"
+                  inputs:
+                    azureSubscription: 157081ad-2288-4aa4-b6d0-69f2165b7326
+                    appName: myApplication-AppService
+                    appType: webApp
+                    package: $(Pipeline.Workspace)/fakerestapi/fakerestapi.zip
