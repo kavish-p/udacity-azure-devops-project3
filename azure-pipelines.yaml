@@ -81,13 +81,13 @@ stages:
               mergeTestResults: true
               testRunTitle: DataValidationAndRegression
 
-          - task: ArchiveFiles@2
-            displayName: "Archive UI Tests"
-            inputs:
-              rootFolderOrFile: "$(System.DefaultWorkingDirectory)/automatedtesting/selenium"
-              includeRootFolder: false
-              archiveType: "zip"
-              archiveFile: "$(Build.ArtifactStagingDirectory)/uitests.zip"
+          # - task: ArchiveFiles@2
+          #   displayName: "Archive UI Tests"
+          #   inputs:
+          #     rootFolderOrFile: "$(System.DefaultWorkingDirectory)/automatedtesting/selenium"
+          #     includeRootFolder: false
+          #     archiveType: "zip"
+          #     archiveFile: "$(Build.ArtifactStagingDirectory)/uitests.zip"
 
           # - publish: $(Build.ArtifactStagingDirectory)/uitests.zip
           #   displayName: Publish Selenium Archive
@@ -95,7 +95,7 @@ stages:
 
           - task: PublishPipelineArtifact@1
             inputs:
-              targetPath: $(Build.ArtifactStagingDirectory)/uitests.zip
+              targetPath: "$(System.DefaultWorkingDirectory)/automatedtesting/selenium"
               artifactName: uitests
 
           - task: ArchiveFiles@2
