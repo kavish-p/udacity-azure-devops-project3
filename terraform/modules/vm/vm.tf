@@ -32,5 +32,5 @@ resource "azurerm_linux_virtual_machine" "" {
   #   sku       = "18.04-LTS"
   #   version   = "latest"
   # }
-  source_image_id = "/subscriptions/157081ad-2288-4aa4-b6d0-69f2165b7326/resourceGroups/Azuredevops/providers/Microsoft.Compute/galleries/compute/images/azure-environment-definition/versions/1.0.0"
+  source_image_id = "/subscriptions/157081ad-2288-4aa4-b6d0-69f2165b7326/resourceGroups/Azuredevops/providers/Microsoft.Compute/galleries/gallery/images/def1/versions/1.0.0"
 }
