@@ -51,8 +51,9 @@ stages:
               environmentServiceNameAzureRM: "$(azureServiceConnectionId)"
 
           - bash: |
-              sudo apt install nodejs
-            displayName: Install NodeJS
+              sudo apt install nodejs -y
+              sudo apt install npm -y
+            displayName: Install NodeJS/npm
 
           - task: CmdLine@2
             displayName: Install Newman
