@@ -19,10 +19,10 @@ stages:
     jobs:
       - job: BuildInfrastructure
         steps:
-          - task: TerraformInstaller@0
-            displayName: "Terrafom installation"
-            inputs:
-              terraformVersion: "1.2.9"
+          # - task: TerraformInstaller@0
+          #   displayName: "Terrafom installation"
+          #   inputs:
+          #     terraformVersion: "1.2.9"
 
           - task: TerraformCLI@0
             displayName: "Terrafom init"
@@ -50,17 +50,17 @@ stages:
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test"
               environmentServiceNameAzureRM: "$(azureServiceConnectionId)"
 
-          - bash: |
-              sudo apt install nodejs -y
-              sudo apt install npm -y
-            displayName: Install NodeJS/npm
+          # - bash: |
+          #     sudo apt install nodejs -y
+          #     sudo apt install npm -y
+          #   displayName: Install NodeJS/npm
 
-          - task: CmdLine@2
-            displayName: Install Newman
-            inputs:
-              script: |
-                sudo npm install -g newman
-              workingDirectory: $(System.DefaultWorkingDirectory)
+          # - task: CmdLine@2
+          #   displayName: Install Newman
+          #   inputs:
+          #     script: |
+          #       sudo npm install -g newman
+          #     workingDirectory: $(System.DefaultWorkingDirectory)
 
           - task: CmdLine@2
             displayName: Run Data Validation Tests
@@ -140,6 +140,6 @@ stages:
                   inputs:
                     azureSubscription: $(azureServiceConnectionId)
                     resourceGroupName: Azuredevops
-                    appName: myApplication-AppService
+                    appName: kavish-udacity-3
                     appType: webApp
                     package: $(Pipeline.Workspace)/fakerestapi/fakerestapi.zip
