@@ -50,6 +50,10 @@ stages:
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test"
               environmentServiceNameAzureRM: "$(azureServiceConnectionId)"
 
+          - bash: |
+              sudo apt install nodejs
+            displayName: Install NodeJS
+
           - task: CmdLine@2
             displayName: Install Newman
             inputs:
