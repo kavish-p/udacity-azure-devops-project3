@@ -113,7 +113,7 @@ stages:
           - task: ArchiveFiles@2
             displayName: "Archive PerformanceTestSuite"
             inputs:
-              rootFolderOrFile: "$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/Starter.jmx"
+              rootFolderOrFile: "$(System.DefaultWorkingDirectory)/automatedtesting/jmeter"
               includeRootFolder: false
               archiveType: zip
               archiveFile: "$(Build.ArtifactStagingDirectory)/jmeter.zip"
@@ -143,3 +143,10 @@ stages:
                     appName: kavish-udacity-3
                     appType: webApp
                     package: $(Pipeline.Workspace)/fakerestapi/fakerestapi.zip
+
+                - bash: |
+                    sudo apt-get install openjdk-11-jre-headless -y
+                    wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.6.2.tgz -O jmeter.tgz
+                    tar xzvf jmeter.tgz
+                    apache-jmeter-5.6.2/bin/jmeter --version
+                  displayName: Install Java/JMeter
