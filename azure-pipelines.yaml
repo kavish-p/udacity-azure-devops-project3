@@ -151,34 +151,65 @@ stages:
                     apache-jmeter-5.6.2/bin/jmeter --version
                   displayName: Install Java/JMeter
 
-                - bash: |
-                    apache-jmeter-5.6.2/bin/jmeter -n -t automatedtesting/jmeter/StressTest.jmx -l log.jtl -e -o JMeterReportStress -Jdata=automatedtesting/jmeter/books.csv
-                  displayName: JMeter Stress Test
+                # - bash: |
+                #     apache-jmeter-5.6.2/bin/jmeter -n -t automatedtesting/jmeter/StressTest.jmx -l log.jtl -e -o JMeterReportStress -Jdata=automatedtesting/jmeter/books.csv
+                #   displayName: JMeter Stress Test
 
-                - bash: |
-                    apache-jmeter-5.6.2/bin/jmeter -n -t automatedtesting/jmeter/EnduranceTest.jmx -l log2.jtl -e -o JMeterReportEndurance -Jdata=automatedtesting/jmeter/books.csv
-                  displayName: JMeter Endurance Test
+                # - bash: |
+                #     apache-jmeter-5.6.2/bin/jmeter -n -t automatedtesting/jmeter/EnduranceTest.jmx -l log2.jtl -e -o JMeterReportEndurance -Jdata=automatedtesting/jmeter/books.csv
+                #   displayName: JMeter Endurance Test
 
-                - task: ArchiveFiles@2
-                  displayName: Archive Stress Test HTML report
+                # - task: ArchiveFiles@2
+                #   displayName: Archive Stress Test HTML report
+                #   inputs:
+                #     rootFolderOrFile: "$(Build.SourcesDirectory)/JMeterReportStress"
+                #     includeRootFolder: false
+                #     archiveType: "zip"
+                #     archiveFile: "$(Build.SourcesDirectory)/JMeterReportStress.zip"
+
+                # - task: ArchiveFiles@2
+                #   displayName: Archive Endurance Test HTML report
+                #   inputs:
+                #     rootFolderOrFile: "$(Build.SourcesDirectory)/JMeterReportEndurance"
+                #     includeRootFolder: false
+                #     archiveType: "zip"
+                #     archiveFile: "$(Build.SourcesDirectory)/JMeterReportEndurance.zip"
+
+                # - publish: "$(Build.SourcesDirectory)/JMeterReportStress.zip"
+                #   displayName: Publish Stress Test Report
+                #   artifact: stress-test
+
+                # - publish: "$(Build.SourcesDirectory)/JMeterReportEndurance.zip"
+                #   displayName: Publish Endurance Test Report
+                #   artifact: endurance-test
+
+      - deployment: VMDeploy
+        displayName: Selenium Tests
+        environment:
+          name: $(environmentName)
+          resourceType: VirtualMachine
+          tags: selenium
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - download: current
+                  artifact: drop-ui-tests
+
+                - task: Bash@3
                   inputs:
-                    rootFolderOrFile: "$(Build.SourcesDirectory)/JMeterReportStress"
-                    includeRootFolder: false
-                    archiveType: "zip"
-                    archiveFile: "$(Build.SourcesDirectory)/JMeterReportStress.zip"
+                    targetType: "inline"
+                    script: |
+                      #! /bin/bash
 
-                - task: ArchiveFiles@2
-                  displayName: Archive Endurance Test HTML report
-                  inputs:
-                    rootFolderOrFile: "$(Build.SourcesDirectory)/JMeterReportEndurance"
-                    includeRootFolder: false
-                    archiveType: "zip"
-                    archiveFile: "$(Build.SourcesDirectory)/JMeterReportEndurance.zip"
+                      sudo apt-get upgrade -y
+                      sudo apt-get install python3-pip -y
+                      sudo apt-get install unzip -y
+                      sudo apt-get install -y chromium-browser
+                      pip3 install selenium
 
-                - publish: "$(Build.SourcesDirectory)/JMeterReportStress.zip"
-                  displayName: Publish Stress Test Report
-                  artifact: stress-test
+                      #  ToDo: Add chromedriver executable to path
+                      export PATH=$PATH:/path/to/chromedriver     
 
-                - publish: "$(Build.SourcesDirectory)/JMeterReportEndurance.zip"
-                  displayName: Publish Endurance Test Report
-                  artifact: endurance-test
+                      # ToDo: Write commands for deploying the UI Test Suite (published zip artifact) to the linux VM and execute the Test Suite
+                      # ToDo: Direct the output of the Selenium Test Suite to a log file
