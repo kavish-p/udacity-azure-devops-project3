@@ -129,20 +129,20 @@ stages:
     dependsOn:
       - Build
     jobs:
-      # - deployment: FakeRestAPI
-      #   environment: $(environmentName)
-      #   strategy:
-      #     runOnce:
-      #       deploy:
-      #         steps:
-      #           - task: AzureWebApp@1
-      #             displayName: "Deploy Azure Web App"
-      #             inputs:
-      #               azureSubscription: $(azureServiceConnectionId)
-      #               resourceGroupName: Azuredevops
-      #               appName: kavish-udacity-3
-      #               appType: webApp
-      #               package: $(Pipeline.Workspace)/fakerestapi/fakerestapi.zip
+      - deployment: FakeRestAPI
+        environment: $(environmentName)
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureWebApp@1
+                  displayName: "Deploy Azure Web App"
+                  inputs:
+                    azureSubscription: $(azureServiceConnectionId)
+                    resourceGroupName: Azuredevops
+                    appName: kavish-udacity-3
+                    appType: webApp
+                    package: $(Pipeline.Workspace)/fakerestapi/fakerestapi.zip
 
       #           - bash: |
       #               sudo apt-get install openjdk-11-jre-headless -y
