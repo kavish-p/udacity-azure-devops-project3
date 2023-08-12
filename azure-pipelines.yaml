@@ -129,59 +129,59 @@ stages:
     dependsOn:
       - Build
     jobs:
-      - deployment: FakeRestAPI
-        environment: $(environmentName)
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - task: AzureWebApp@1
-                  displayName: "Deploy Azure Web App"
-                  inputs:
-                    azureSubscription: $(azureServiceConnectionId)
-                    resourceGroupName: Azuredevops
-                    appName: kavish-udacity-3
-                    appType: webApp
-                    package: $(Pipeline.Workspace)/fakerestapi/fakerestapi.zip
+      # - deployment: FakeRestAPI
+      #   environment: $(environmentName)
+      #   strategy:
+      #     runOnce:
+      #       deploy:
+      #         steps:
+      #           - task: AzureWebApp@1
+      #             displayName: "Deploy Azure Web App"
+      #             inputs:
+      #               azureSubscription: $(azureServiceConnectionId)
+      #               resourceGroupName: Azuredevops
+      #               appName: kavish-udacity-3
+      #               appType: webApp
+      #               package: $(Pipeline.Workspace)/fakerestapi/fakerestapi.zip
 
-                - bash: |
-                    sudo apt-get install openjdk-11-jre-headless -y
-                    wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.6.2.tgz -O jmeter.tgz
-                    tar xzvf jmeter.tgz
-                    apache-jmeter-5.6.2/bin/jmeter --version
-                  displayName: Install Java/JMeter
+      #           - bash: |
+      #               sudo apt-get install openjdk-11-jre-headless -y
+      #               wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.6.2.tgz -O jmeter.tgz
+      #               tar xzvf jmeter.tgz
+      #               apache-jmeter-5.6.2/bin/jmeter --version
+      #             displayName: Install Java/JMeter
 
-                - bash: |
-                    apache-jmeter-5.6.2/bin/jmeter -n -t automatedtesting/jmeter/StressTest.jmx -l log.jtl -e -o JMeterReportStress -Jdata=automatedtesting/jmeter/books.csv
-                  displayName: JMeter Stress Test
+      #           - bash: |
+      #               apache-jmeter-5.6.2/bin/jmeter -n -t automatedtesting/jmeter/StressTest.jmx -l log.jtl -e -o JMeterReportStress -Jdata=automatedtesting/jmeter/books.csv
+      #             displayName: JMeter Stress Test
 
-                - bash: |
-                    apache-jmeter-5.6.2/bin/jmeter -n -t automatedtesting/jmeter/EnduranceTest.jmx -l log2.jtl -e -o JMeterReportEndurance -Jdata=automatedtesting/jmeter/books.csv
-                  displayName: JMeter Endurance Test
+      #           - bash: |
+      #               apache-jmeter-5.6.2/bin/jmeter -n -t automatedtesting/jmeter/EnduranceTest.jmx -l log2.jtl -e -o JMeterReportEndurance -Jdata=automatedtesting/jmeter/books.csv
+      #             displayName: JMeter Endurance Test
 
-                - task: ArchiveFiles@2
-                  displayName: Archive Stress Test HTML report
-                  inputs:
-                    rootFolderOrFile: "$(Build.SourcesDirectory)/JMeterReportStress"
-                    includeRootFolder: false
-                    archiveType: "zip"
-                    archiveFile: "$(Build.SourcesDirectory)/JMeterReportStress.zip"
+      #           - task: ArchiveFiles@2
+      #             displayName: Archive Stress Test HTML report
+      #             inputs:
+      #               rootFolderOrFile: "$(Build.SourcesDirectory)/JMeterReportStress"
+      #               includeRootFolder: false
+      #               archiveType: "zip"
+      #               archiveFile: "$(Build.SourcesDirectory)/JMeterReportStress.zip"
 
-                - task: ArchiveFiles@2
-                  displayName: Archive Endurance Test HTML report
-                  inputs:
-                    rootFolderOrFile: "$(Build.SourcesDirectory)/JMeterReportEndurance"
-                    includeRootFolder: false
-                    archiveType: "zip"
-                    archiveFile: "$(Build.SourcesDirectory)/JMeterReportEndurance.zip"
+      #           - task: ArchiveFiles@2
+      #             displayName: Archive Endurance Test HTML report
+      #             inputs:
+      #               rootFolderOrFile: "$(Build.SourcesDirectory)/JMeterReportEndurance"
+      #               includeRootFolder: false
+      #               archiveType: "zip"
+      #               archiveFile: "$(Build.SourcesDirectory)/JMeterReportEndurance.zip"
 
-                - publish: "$(Build.SourcesDirectory)/JMeterReportStress.zip"
-                  displayName: Publish Stress Test Report
-                  artifact: stress-test
+      #           - publish: "$(Build.SourcesDirectory)/JMeterReportStress.zip"
+      #             displayName: Publish Stress Test Report
+      #             artifact: stress-test
 
-                - publish: "$(Build.SourcesDirectory)/JMeterReportEndurance.zip"
-                  displayName: Publish Endurance Test Report
-                  artifact: endurance-test
+      #           - publish: "$(Build.SourcesDirectory)/JMeterReportEndurance.zip"
+      #             displayName: Publish Endurance Test Report
+      #             artifact: endurance-test
 
       - deployment: VMDeploy
         displayName: Selenium Tests
@@ -193,7 +193,7 @@ stages:
             deploy:
               steps:
                 - download: current
-                  artifact: drop-ui-tests
+                  artifact: uitests
 
                 - task: Bash@3
                   inputs:
@@ -207,8 +207,7 @@ stages:
                       sudo apt-get install -y chromium-browser
                       pip3 install selenium
 
-                      #  ToDo: Add chromedriver executable to path
-                      export PATH=$PATH:/path/to/chromedriver     
+                      ls -l
+                      pwd
 
-                      # ToDo: Write commands for deploying the UI Test Suite (published zip artifact) to the linux VM and execute the Test Suite
-                      # ToDo: Direct the output of the Selenium Test Suite to a log file
+                      python3 -V
