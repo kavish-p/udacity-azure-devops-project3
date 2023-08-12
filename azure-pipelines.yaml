@@ -201,15 +201,14 @@ stages:
                     script: |
                       #! /bin/bash
 
-                      sudo apt-get install python3-pip -y
-                      sudo apt-get install unzip -y
-                      sudo apt-get install -y chromium-browser
-                      pip3 install selenium
+                      # sudo apt-get install python3-pip -y
+                      # sudo apt-get install unzip -y
+                      # sudo apt-get install -y chromium-browser
+                      # pip3 install selenium
 
-                      unzip $(Pipeline.Workspace)/uitests/uitests.zip
+                      cd $(Pipeline.Workspace)/uitests/
+                      unzip uitests.zip
 
-                      ls -l $(Pipeline.Workspace)/uitests
-                      ls -l $(Pipeline.Workspace)
                       ls -l
 
                       python3 test.py
