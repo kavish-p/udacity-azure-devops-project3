@@ -152,21 +152,11 @@ stages:
                   displayName: Install Java/JMeter
 
                 - bash: |
-                    apache-jmeter-5.6.2/bin/jmeter -n -t automatedtesting/jmeter/StressTest.jmx -l log.jtl -e -o JMeterReportStress -Jdata=automatedtesting/jmeter/books.csv
-                  displayName: JMeter Stress Test
-
-                - bash: |
-                    apache-jmeter-5.6.2/bin/jmeter -n -t automatedtesting/jmeter/EnduranceTest.jmx -l log2.jtl -e -o JMeterReportEndurance -Jdata=automatedtesting/jmeter/books.csv
-                  displayName: JMeter Endurance Test
+                    apache-jmeter-5.6.2/bin/jmeter -n -t automatedtesting/jmeter/TestSuites.jmx -l log.jtl -e -o JMeterReport -Jdata=automatedtesting/jmeter/books.csv
+                  displayName: JMeter Test
 
                 - task: publishhtmlreport@1
-                  displayName: Stress Test Results
+                  displayName: JMeter Test Results
                   inputs:
                     htmlType: "Jmeter"
-                    JmeterReportsPath: "$(Build.SourcesDirectory)/JMeterReportStress"
-
-                - task: publishhtmlreport@1
-                  displayName: Endurance Test Results
-                  inputs:
-                    htmlType: "Jmeter"
-                    JmeterReportsPath: "$(Build.SourcesDirectory)/JMeterReportEndurance"
+                    JmeterReportsPath: "$(Build.SourcesDirectory)/JMeterReport"
