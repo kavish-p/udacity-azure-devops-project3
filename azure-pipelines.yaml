@@ -19,48 +19,48 @@ stages:
     jobs:
       - job: BuildInfrastructure
         steps:
-          # - task: TerraformInstaller@0
-          #   displayName: "Terrafom installation"
-          #   inputs:
-          #     terraformVersion: "1.2.9"
+          - task: TerraformInstaller@0
+            displayName: "Terrafom installation"
+            inputs:
+              terraformVersion: "1.2.9"
 
-          # - task: TerraformCLI@0
-          #   displayName: "Terrafom init"
-          #   inputs:
-          #     provider: "azurerm"
-          #     command: "init"
-          #     workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test"
-          #     backendServiceArm: "$(azureServiceConnectionId)"
-          #     backendAzureRmResourceGroupName: "Azuredevops"
-          #     backendAzureRmStorageAccountName: "tfstate731116321"
-          #     backendAzureRmContainerName: "tfstate"
-          #     backendAzureRmKey: "test.terraform.tfstate"
+          - task: TerraformCLI@0
+            displayName: "Terrafom init"
+            inputs:
+              provider: "azurerm"
+              command: "init"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test"
+              backendServiceArm: "$(azureServiceConnectionId)"
+              backendAzureRmResourceGroupName: "Azuredevops"
+              backendAzureRmStorageAccountName: "tfstate731116321"
+              backendAzureRmContainerName: "tfstate"
+              backendAzureRmKey: "test.terraform.tfstate"
 
-          # - task: TerraformCLI@0
-          #   displayName: Terraform validate
-          #   inputs:
-          #     provider: "azurerm"
-          #     command: "validate"
+          - task: TerraformCLI@0
+            displayName: Terraform validate
+            inputs:
+              provider: "azurerm"
+              command: "validate"
 
-          # - task: TerraformCLI@0
-          #   displayName: Terraform apply
-          #   inputs:
-          #     provider: "azurerm"
-          #     command: "apply"
-          #     workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test"
-          #     environmentServiceNameAzureRM: "$(azureServiceConnectionId)"
+          - task: TerraformCLI@0
+            displayName: Terraform apply
+            inputs:
+              provider: "azurerm"
+              command: "apply"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test"
+              environmentServiceNameAzureRM: "$(azureServiceConnectionId)"
 
-          # - bash: |
-          #     sudo apt install nodejs -y
-          #     sudo apt install npm -y
-          #   displayName: Install NodeJS/npm
+          - bash: |
+              sudo apt install nodejs -y
+              sudo apt install npm -y
+            displayName: Install NodeJS/npm
 
-          # - task: CmdLine@2
-          #   displayName: Install Newman
-          #   inputs:
-          #     script: |
-          #       sudo npm install -g newman
-          #     workingDirectory: $(System.DefaultWorkingDirectory)
+          - task: CmdLine@2
+            displayName: Install Newman
+            inputs:
+              script: |
+                sudo npm install -g newman
+              workingDirectory: $(System.DefaultWorkingDirectory)
 
           - task: CmdLine@2
             displayName: Run Data Validation Tests
@@ -135,14 +135,14 @@ stages:
           runOnce:
             deploy:
               steps:
-                # - task: AzureWebApp@1
-                #   displayName: "Deploy Azure Web App"
-                #   inputs:
-                #     azureSubscription: $(azureServiceConnectionId)
-                #     resourceGroupName: Azuredevops
-                #     appName: kavish-udacity-3
-                #     appType: webApp
-                #     package: $(Pipeline.Workspace)/fakerestapi/fakerestapi.zip
+                - task: AzureWebApp@1
+                  displayName: "Deploy Azure Web App"
+                  inputs:
+                    azureSubscription: $(azureServiceConnectionId)
+                    resourceGroupName: Azuredevops
+                    appName: kavish-udacity-3
+                    appType: webApp
+                    package: $(Pipeline.Workspace)/fakerestapi/fakerestapi.zip
 
                 - bash: |
                     sudo apt-get install openjdk-11-jre-headless -y
@@ -151,37 +151,37 @@ stages:
                     apache-jmeter-5.6.2/bin/jmeter --version
                   displayName: Install Java/JMeter
 
-                # - bash: |
-                #     apache-jmeter-5.6.2/bin/jmeter -n -t automatedtesting/jmeter/StressTest.jmx -l log.jtl -e -o JMeterReportStress -Jdata=automatedtesting/jmeter/books.csv
-                #   displayName: JMeter Stress Test
+                - bash: |
+                    apache-jmeter-5.6.2/bin/jmeter -n -t automatedtesting/jmeter/StressTest.jmx -l log.jtl -e -o JMeterReportStress -Jdata=automatedtesting/jmeter/books.csv
+                  displayName: JMeter Stress Test
 
-                # - bash: |
-                #     apache-jmeter-5.6.2/bin/jmeter -n -t automatedtesting/jmeter/EnduranceTest.jmx -l log2.jtl -e -o JMeterReportEndurance -Jdata=automatedtesting/jmeter/books.csv
-                #   displayName: JMeter Endurance Test
+                - bash: |
+                    apache-jmeter-5.6.2/bin/jmeter -n -t automatedtesting/jmeter/EnduranceTest.jmx -l log2.jtl -e -o JMeterReportEndurance -Jdata=automatedtesting/jmeter/books.csv
+                  displayName: JMeter Endurance Test
 
-                # - task: ArchiveFiles@2
-                #   displayName: Archive Stress Test HTML report
-                #   inputs:
-                #     rootFolderOrFile: "$(Build.SourcesDirectory)/JMeterReportStress"
-                #     includeRootFolder: false
-                #     archiveType: "zip"
-                #     archiveFile: "$(Build.SourcesDirectory)/JMeterReportStress.zip"
+                - task: ArchiveFiles@2
+                  displayName: Archive Stress Test HTML report
+                  inputs:
+                    rootFolderOrFile: "$(Build.SourcesDirectory)/JMeterReportStress"
+                    includeRootFolder: false
+                    archiveType: "zip"
+                    archiveFile: "$(Build.SourcesDirectory)/JMeterReportStress.zip"
 
-                # - task: ArchiveFiles@2
-                #   displayName: Archive Endurance Test HTML report
-                #   inputs:
-                #     rootFolderOrFile: "$(Build.SourcesDirectory)/JMeterReportEndurance"
-                #     includeRootFolder: false
-                #     archiveType: "zip"
-                #     archiveFile: "$(Build.SourcesDirectory)/JMeterReportEndurance.zip"
+                - task: ArchiveFiles@2
+                  displayName: Archive Endurance Test HTML report
+                  inputs:
+                    rootFolderOrFile: "$(Build.SourcesDirectory)/JMeterReportEndurance"
+                    includeRootFolder: false
+                    archiveType: "zip"
+                    archiveFile: "$(Build.SourcesDirectory)/JMeterReportEndurance.zip"
 
-                # - publish: "$(Build.SourcesDirectory)/JMeterReportStress.zip"
-                #   displayName: Publish Stress Test Report
-                #   artifact: stress-test
+                - publish: "$(Build.SourcesDirectory)/JMeterReportStress.zip"
+                  displayName: Publish Stress Test Report
+                  artifact: stress-test
 
-                # - publish: "$(Build.SourcesDirectory)/JMeterReportEndurance.zip"
-                #   displayName: Publish Endurance Test Report
-                #   artifact: endurance-test
+                - publish: "$(Build.SourcesDirectory)/JMeterReportEndurance.zip"
+                  displayName: Publish Endurance Test Report
+                  artifact: endurance-test
 
       - deployment: VMDeploy
         displayName: Selenium Tests
