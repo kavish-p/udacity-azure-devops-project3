@@ -209,5 +209,7 @@ stages:
                       unzip $(Pipeline.Workspace)/uitests/uitests.zip
 
                       ls -l $(Pipeline.Workspace)/uitests
+                      ls -l $(Pipeline.Workspace)
+                      ls -l
 
-                      python3 $(Pipeline.Workspace)/uitests/test.py
+                      python3 test.py
