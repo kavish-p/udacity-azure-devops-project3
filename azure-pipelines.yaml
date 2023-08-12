@@ -152,11 +152,33 @@ stages:
                   displayName: Install Java/JMeter
 
                 - bash: |
-                    apache-jmeter-5.6.2/bin/jmeter -n -t automatedtesting/jmeter/TestSuites.jmx -l log.jtl -e -o JMeterReport -Jdata=automatedtesting/jmeter/books.csv
-                  displayName: JMeter Test
+                    apache-jmeter-5.6.2/bin/jmeter -n -t automatedtesting/jmeter/StressTest.jmx -l log.jtl -e -o JMeterReportStress -Jdata=automatedtesting/jmeter/books.csv
+                  displayName: JMeter Stress Test
 
-                - task: publishhtmlreport@1
-                  displayName: JMeter Test Results
+                - bash: |
+                    apache-jmeter-5.6.2/bin/jmeter -n -t automatedtesting/jmeter/EnduranceTest.jmx -l log2.jtl -e -o JMeterReportEndurance -Jdata=automatedtesting/jmeter/books.csv
+                  displayName: JMeter Endurance Test
+
+                - task: ArchiveFiles@2
+                  displayName: Archive Stress Test HTML report
                   inputs:
-                    htmlType: "Jmeter"
-                    JmeterReportsPath: "$(Build.SourcesDirectory)/JMeterReport"
+                    rootFolderOrFile: "$(Build.SourcesDirectory)/JMeterReportStress"
+                    includeRootFolder: false
+                    archiveType: "zip"
+                    archiveFile: "$(Build.SourcesDirectory)/JMeterReportStress.zip"
+
+                - task: ArchiveFiles@2
+                  displayName: Archive Endurance Test HTML report
+                  inputs:
+                    rootFolderOrFile: "$(Build.SourcesDirectory)/JMeterReportEndurance"
+                    includeRootFolder: false
+                    archiveType: "zip"
+                    archiveFile: "$(Build.SourcesDirectory)/JMeterReportEndurance.zip"
+
+                - publish: "$(Build.SourcesDirectory)/JMeterReportStress.zip"
+                  displayName: Publish Stress Test Report
+                  artifact: stress-test
+
+                - publish: "$(Build.SourcesDirectory)/JMeterReportEndurance.zip"
+                  displayName: Publish Endurance Test Report
+                  artifact: endurance-test
