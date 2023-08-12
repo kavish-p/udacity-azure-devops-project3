@@ -206,6 +206,8 @@ stages:
                       sudo apt-get install -y chromium-browser
                       pip3 install selenium
 
+                      unzip $(Pipeline.Workspace)/uitests/uitests.zip
+
                       ls -l $(Pipeline.Workspace)/uitests
 
                       python3 $(Pipeline.Workspace)/uitests/test.py
