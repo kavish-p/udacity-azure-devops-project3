@@ -207,7 +207,7 @@ stages:
                       # pip3 install selenium
 
                       cd $(Pipeline.Workspace)/uitests/
-                      unzip uitests.zip
+                      unzip -o uitests.zip
 
                       ls -l
 
