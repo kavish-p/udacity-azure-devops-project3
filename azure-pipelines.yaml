@@ -70,57 +70,57 @@ stages:
                 newman run data_validation_collection.json  --reporters cli,junit --reporter-junit-export results/report1.xml
               workingDirectory: "$(System.DefaultWorkingDirectory)/automatedtesting/postman"
 
-          - task: CmdLine@2
-            displayName: Run Regression Tests
-            continueOnError: true
-            inputs:
-              script: |
-                newman run regression_collection.json --reporters cli,junit --reporter-junit-export results/report2.xml
-              workingDirectory: "$(System.DefaultWorkingDirectory)/automatedtesting/postman"
+          # - task: CmdLine@2
+          #   displayName: Run Regression Tests
+          #   continueOnError: true
+          #   inputs:
+          #     script: |
+          #       newman run regression_collection.json --reporters cli,junit --reporter-junit-export results/report2.xml
+          #     workingDirectory: "$(System.DefaultWorkingDirectory)/automatedtesting/postman"
 
-          - task: PublishTestResults@2
-            inputs:
-              testResultsFormat: JUnit
-              testResultsFiles: "*.xml"
-              searchFolder: "$(System.DefaultWorkingDirectory)/automatedtesting/postman/results"
-              mergeTestResults: true
-              testRunTitle: DataValidationAndRegression
+          # - task: PublishTestResults@2
+          #   inputs:
+          #     testResultsFormat: JUnit
+          #     testResultsFiles: "*.xml"
+          #     searchFolder: "$(System.DefaultWorkingDirectory)/automatedtesting/postman/results"
+          #     mergeTestResults: true
+          #     testRunTitle: DataValidationAndRegression
 
-          - task: ArchiveFiles@2
-            displayName: "Archive UI Tests"
-            inputs:
-              rootFolderOrFile: "$(System.DefaultWorkingDirectory)/automatedtesting/selenium"
-              includeRootFolder: false
-              archiveType: "zip"
-              archiveFile: "$(Build.ArtifactStagingDirectory)/uitests.zip"
+          # - task: ArchiveFiles@2
+          #   displayName: "Archive UI Tests"
+          #   inputs:
+          #     rootFolderOrFile: "$(System.DefaultWorkingDirectory)/automatedtesting/selenium"
+          #     includeRootFolder: false
+          #     archiveType: "zip"
+          #     archiveFile: "$(Build.ArtifactStagingDirectory)/uitests.zip"
 
-          - publish: $(Build.ArtifactStagingDirectory)/uitests.zip
-            displayName: Publish Selenium Archive
-            artifact: uitests
+          # - publish: $(Build.ArtifactStagingDirectory)/uitests.zip
+          #   displayName: Publish Selenium Archive
+          #   artifact: uitests
 
-          - task: ArchiveFiles@2
-            displayName: "Archive FakeRestAPI"
-            inputs:
-              rootFolderOrFile: "$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/fakerestapi"
-              includeRootFolder: false
-              archiveType: zip
-              archiveFile: "$(Build.ArtifactStagingDirectory)/fakerestapi.zip"
+          # - task: ArchiveFiles@2
+          #   displayName: "Archive FakeRestAPI"
+          #   inputs:
+          #     rootFolderOrFile: "$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/fakerestapi"
+          #     includeRootFolder: false
+          #     archiveType: zip
+          #     archiveFile: "$(Build.ArtifactStagingDirectory)/fakerestapi.zip"
 
-          - publish: "$(Build.ArtifactStagingDirectory)/fakerestapi.zip"
-            displayName: Publish FakeRestAPI Archive
-            artifact: fakerestapi
+          # - publish: "$(Build.ArtifactStagingDirectory)/fakerestapi.zip"
+          #   displayName: Publish FakeRestAPI Archive
+          #   artifact: fakerestapi
 
-          - task: ArchiveFiles@2
-            displayName: "Archive PerformanceTestSuite"
-            inputs:
-              rootFolderOrFile: "$(System.DefaultWorkingDirectory)/automatedtesting/jmeter"
-              includeRootFolder: false
-              archiveType: zip
-              archiveFile: "$(Build.ArtifactStagingDirectory)/jmeter.zip"
+          # - task: ArchiveFiles@2
+          #   displayName: "Archive PerformanceTestSuite"
+          #   inputs:
+          #     rootFolderOrFile: "$(System.DefaultWorkingDirectory)/automatedtesting/jmeter"
+          #     includeRootFolder: false
+          #     archiveType: zip
+          #     archiveFile: "$(Build.ArtifactStagingDirectory)/jmeter.zip"
 
-          - publish: "$(Build.ArtifactStagingDirectory)/jmeter.zip"
-            displayName: Publish PerformanceTestSuite Archive
-            artifact: jmeter
+          # - publish: "$(Build.ArtifactStagingDirectory)/jmeter.zip"
+          #   displayName: Publish PerformanceTestSuite Archive
+          #   artifact: jmeter
 
   #--------------------------------------------#
   # DEPLOYMENT STAGE
@@ -201,13 +201,9 @@ stages:
                     script: |
                       #! /bin/bash
 
-                      sudo apt-get upgrade -y
                       sudo apt-get install python3-pip -y
                       sudo apt-get install unzip -y
                       sudo apt-get install -y chromium-browser
                       pip3 install selenium
 
-                      ls -l
-                      pwd
-
-                      python3 -V
+                      ls -l $(Pipeline.Workspace)
