@@ -208,7 +208,5 @@ stages:
 
                       cd $(Pipeline.Workspace)/uitests/
                       unzip -o uitests.zip
-
-                      ls -l
-
-                      python3 test.py
+                      python3 test.py > selenium.log
+                      cat selenium.log
