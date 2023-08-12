@@ -62,13 +62,13 @@ stages:
           #       sudo npm install -g newman
           #     workingDirectory: $(System.DefaultWorkingDirectory)
 
-          - task: CmdLine@2
-            displayName: Run Data Validation Tests
-            continueOnError: true
-            inputs:
-              script: |
-                newman run data_validation_collection.json  --reporters cli,junit --reporter-junit-export results/report1.xml
-              workingDirectory: "$(System.DefaultWorkingDirectory)/automatedtesting/postman"
+          # - task: CmdLine@2
+          #   displayName: Run Data Validation Tests
+          #   continueOnError: true
+          #   inputs:
+          #     script: |
+          #       newman run data_validation_collection.json  --reporters cli,junit --reporter-junit-export results/report1.xml
+          #     workingDirectory: "$(System.DefaultWorkingDirectory)/automatedtesting/postman"
 
           # - task: CmdLine@2
           #   displayName: Run Regression Tests
@@ -86,17 +86,17 @@ stages:
           #     mergeTestResults: true
           #     testRunTitle: DataValidationAndRegression
 
-          # - task: ArchiveFiles@2
-          #   displayName: "Archive UI Tests"
-          #   inputs:
-          #     rootFolderOrFile: "$(System.DefaultWorkingDirectory)/automatedtesting/selenium"
-          #     includeRootFolder: false
-          #     archiveType: "zip"
-          #     archiveFile: "$(Build.ArtifactStagingDirectory)/uitests.zip"
+          - task: ArchiveFiles@2
+            displayName: "Archive UI Tests"
+            inputs:
+              rootFolderOrFile: "$(System.DefaultWorkingDirectory)/automatedtesting/selenium"
+              includeRootFolder: false
+              archiveType: "zip"
+              archiveFile: "$(Build.ArtifactStagingDirectory)/uitests.zip"
 
-          # - publish: $(Build.ArtifactStagingDirectory)/uitests.zip
-          #   displayName: Publish Selenium Archive
-          #   artifact: uitests
+          - publish: $(Build.ArtifactStagingDirectory)/uitests.zip
+            displayName: Publish Selenium Archive
+            artifact: uitests
 
           # - task: ArchiveFiles@2
           #   displayName: "Archive FakeRestAPI"
